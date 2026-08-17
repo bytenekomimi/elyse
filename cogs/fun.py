@@ -23,5 +23,18 @@ class Fun(commands.Cog):
             avatar = member.avatar
         await interaction.response.send_message(f"Here's the [avatar]({avatar}) you requested :3", ephemeral=True)
 
+    @app_commands.command(name='banner', description='Get the banner of a user.')
+    @app_commands.describe(server_or_global='Choose if you want a server or global/main banner.')
+    async def banner(self, interaction: discord.Interaction, member: Optional[discord.Member], server_or_global: Literal['Server', 'Global/Main']):
+        if member is None:
+            member = interaction.user
+        if server_or_global == 'Server':
+            banner = member.guild_banner
+        if server_or_global == 'Global/Main':
+            user = await self.bot.fetch_user(member.id)
+            banner = user.banner.url
+            print(banner)
+        await interaction.response.send_message(f"Here's the [banner]({banner}) you requested :3", ephemeral=True)
+
 async def setup(bot):
     await bot.add_cog(Fun(bot), guilds=[discord.Object(id=1508065145631539281)])
