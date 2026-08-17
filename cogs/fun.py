@@ -1,4 +1,4 @@
-from typing import Literal
+from typing import Literal, Optional
 
 import discord
 from discord import app_commands
@@ -18,7 +18,9 @@ class Fun(commands.Cog):
 
     @app_commands.command(name='avatar', description='Get an avatar of a user.')
     @app_commands.describe(server_or_global='Choose if you want a server or global/main avatar.')
-    async def avatar(self, interaction: discord.Interaction, member: discord.Member, server_or_global: Literal['Server', 'Global/Main']):
+    async def avatar(self, interaction: discord.Interaction, member: Optional[discord.Member], server_or_global: Literal['Server', 'Global/Main']):
+        if member is None:
+            member = interaction.user
         if server_or_global == 'Server':
             avatar = member.guild_avatar
         elif server_or_global == 'Global/Main':
