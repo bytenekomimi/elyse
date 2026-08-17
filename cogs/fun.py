@@ -12,10 +12,6 @@ class Fun(commands.Cog):
     async def on_ready(self):
         print("Fun loaded!")
 
-    @app_commands.command(name='hiya', description='Say hi!')
-    async def hiya(self, interaction: discord.Interaction):
-        await interaction.response.send_message("Hiii :3", ephemeral=True)
-
     @app_commands.command(name='avatar', description='Get an avatar of a user.')
     @app_commands.describe(server_or_global='Choose if you want a server or global/main avatar.')
     async def avatar(self, interaction: discord.Interaction, member: Optional[discord.Member], server_or_global: Literal['Server', 'Global/Main']):
