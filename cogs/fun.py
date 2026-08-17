@@ -33,7 +33,6 @@ class Fun(commands.Cog):
         if server_or_global == 'Global/Main':
             user = await self.bot.fetch_user(member.id)
             banner = user.banner.url
-            print(banner)
         await interaction.response.send_message(f"Here's the [banner]({banner}) you requested :3", ephemeral=True)
 
 async def setup(bot):
