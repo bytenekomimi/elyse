@@ -1,3 +1,5 @@
+import asyncio
+
 import discord, logging, os, aiohttp
 from discord import app_commands
 from discord.ext import commands, tasks
@@ -9,6 +11,7 @@ load_dotenv()
 TSECRET = os.getenv("TBOTSECRET")
 TID = os.getenv("TBOTID")
 TACCESS = os.getenv("TACCESS")
+TLIFETIME = int(os.getenv("TLIFETIME") or "0")
 
 logger = logging.getLogger('__name__')
 logging.basicConfig(level=logging.INFO,
@@ -31,11 +34,13 @@ class Util(commands.Cog):
     async def validate_token(self):
         logger.info("Validating token...")
         await twitchAuthValidate()
+        if int(TLIFETIME) <= 600:
+            await twitchAuthGet()
 
     @tasks.loop(seconds=60)
     async def check_live(self):
         logger.info("Checking live status...")
-        params = {"user_login": "deme"}
+        params = {"user_login": "byteneko"}
         headers = {"Authorization": f"Bearer {TACCESS}",
                    "Client-Id": TID
                    }
