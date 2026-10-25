@@ -1,10 +1,8 @@
-import asyncio
-
 import discord, logging, os, aiohttp
 from discord import app_commands
 from discord.ext import commands, tasks
 from dotenv import load_dotenv
-from util.twitchAuthCheck import twitchAuthGet, twitchAuthValidate
+from utils.twitchAuthCheck import twitchAuthGet, twitchAuthValidate
 
 load_dotenv()
 
