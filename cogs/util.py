@@ -2,6 +2,7 @@ import discord, logging, os, aiohttp
 from discord import app_commands
 from discord.ext import commands, tasks
 from dotenv import load_dotenv
+from util.twitchAuthCheck import twitchAuthGet, twitchAuthValidate
 
 load_dotenv()
 
@@ -23,12 +24,18 @@ class Util(commands.Cog):
     @commands.Cog.listener()
     async def on_ready(self):
         self.check_live.start()
+        self.validate_token.start()
         logger.info("Util cog loaded!")
+
+    @tasks.loop(hours=1)
+    async def validate_token(self):
+        logger.info("Validating token...")
+        await twitchAuthValidate()
 
     @tasks.loop(seconds=60)
     async def check_live(self):
         logger.info("Checking live status...")
-        params = {"user_login": "byteneko"}
+        params = {"user_login": "deme"}
         headers = {"Authorization": f"Bearer {TACCESS}",
                    "Client-Id": TID
                    }
