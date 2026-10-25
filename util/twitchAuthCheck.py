@@ -28,7 +28,10 @@ async def twitchAuthGet():
                 logging.error(error)
                 return None
             data = await resp.json()
-            return data["access_token"]
+            set_key(key_to_set="TACCESS", value_to_set=str(data['access_token']), dotenv_path=str(ENV_FILE), quote_mode="never")
+            logging.info("Grabbed new Twitch access token")
+            return None
+
 
 async def twitchAuthValidate():
     headers = {
