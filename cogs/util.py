@@ -20,6 +20,16 @@ logging.basicConfig(level=logging.INFO,
 
 live_bool = False
 
+async def sendLiveEmbed(self, title: str, category: str, thumbnail_url: str):
+    embed = discord.Embed(title="ByteNeko is live now!", color=discord.Color.pink())
+    thumbnail = f"{thumbnail_url[:-20]}1920x1080.jpg"
+    embed.set_image(url=thumbnail)
+    embed.add_field(name="Title", value=title, inline=True)
+    embed.add_field(name="Category", value=category, inline=True)
+    myguild = self.bot.get_guild(1508065145631539281)
+    liveChannel = myguild.get_channel(1564019256134344744)
+    await liveChannel.send(embed=embed)
+
 class Util(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -52,7 +62,11 @@ class Util(commands.Cog):
                 channel_status = response.get("data", [])
                 if channel_status:
                     logger.info("Channel live :)")
-                    live_bool = True
+                    if not live_bool:
+                        await sendLiveEmbed(self, title=response['data'][0]['title'], category=response['data'][0]['game_name'] ,thumbnail_url=response['data'][0]['thumbnail_url'])
+                        live_bool = True
+                    if live_bool:
+                        pass
                 else:
                     logger.info("Channel not live :(")
                     live_bool = False
