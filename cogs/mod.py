@@ -17,7 +17,7 @@ class Mod(commands.Cog):
     async def on_ready(self):
         logger.info("Mod cog loaded!")
 
-    @app_commands.command()
+    @app_commands.command(name="kick", description="Kick a user with a reason.")
     @role_required("governor")
     async def kick(self, interaction: discord.Interaction, user: discord.Member, reason: str = "None given :c"):
         await user.kick(reason=reason)
@@ -35,7 +35,7 @@ class Mod(commands.Cog):
         logger.info(f"Kicked {user} for \"{reason}\" by {interaction.user}")
         await interaction.response.send_message(f'Kicked {user} for the following reason: {reason}.', ephemeral=True)
 
-    @app_commands.command()
+    @app_commands.command(name="ban", description="Ban a user with a reason.")
     @role_required("governor")
     async def ban(self, interaction: discord.Interaction, user: discord.Member, reason: str = "None given :c", delete_message_days: int = 0):
         await user.ban(reason=reason, delete_message_days=delete_message_days)
@@ -53,7 +53,7 @@ class Mod(commands.Cog):
         logger.info(f"Baned {user} for \"{reason}\" by {interaction.user}, with messages deleted for the last {delete_message_days} days.")
         await interaction.response.send_message(f'Baned {user} for the following reason: {reason}. Deleted all messages from the past {delete_message_days} days', ephemeral=True)
 
-    @app_commands.command(name="purge", description="purge command")
+    @app_commands.command(name="purge", description="Purge command")
     @role_required("governor")
     @app_commands.default_permissions(manage_messages=True)
     async def purge(self, interaction: discord.Interaction, amount: int = 100):
