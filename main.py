@@ -2,6 +2,7 @@ import discord, os, asyncio, logging
 from datetime import datetime
 from dotenv import load_dotenv
 from discord.ext import commands
+from utils.database import Database
 
 load_dotenv()
 
@@ -47,7 +48,13 @@ async def loadCogs():
             await bot.load_extension(f'cogs.{filename[:-3]}')
 
 async def main():
-    await loadCogs()
-    await bot.start(TOKEN)
+    async with bot:
+        bot.db = await Database().connect()
+
+        try:
+            await loadCogs()
+            await bot.start(TOKEN)
+        finally:
+            await bot.db.close()
 
 asyncio.run(main())
