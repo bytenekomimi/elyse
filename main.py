@@ -3,6 +3,7 @@ from datetime import datetime
 from dotenv import load_dotenv
 from discord.ext import commands
 from utils.database import Database
+from utils.roleCheck import role_required
 
 load_dotenv()
 
@@ -37,6 +38,7 @@ async def on_ready():
     logger.info(f'Logged in as {bot.user}')
 
 @bot.tree.command(name='sync', description='Synchronize cmds')
+@role_required("Lead Neko")
 async def sync(interaction: discord.Interaction):
     fmt = await bot.tree.sync(guild=MY_GUILD)
     await interaction.response.send_message(f"Refreshed {len(fmt)} commands.", ephemeral=True)
